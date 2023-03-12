@@ -74,5 +74,6 @@ jobs:
         name: build-${{ matrix.os }}
         path: build
     - name: Test
+      shell: pwsh
       working-directory: build
       run: ctest --output-on-failure --no-tests=error -C Release -j 2
