@@ -75,6 +75,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: build-${{ matrix.os }}
+        path: build
     - name: Test
       working-directory: build
       run: ctest --output-on-failure --no-tests=error -C Release -j 2
