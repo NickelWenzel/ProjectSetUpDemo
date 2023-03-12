@@ -1,0 +1,49 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+    - master
+
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-12, ubuntu-22.04, windows-2022]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with: { python-version: "3.8" }
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pip3 install "conan<2"
+        conan profile new default --detect
+        if [ ${{ matrix.os }} = ubuntu-22.04 ]; then
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+        fi
+        conan install . -b missing
+
+    - name: Configure
+      shell: pwsh
+      run: cmake "--preset=ci-$("${{ matrix.os }}".split("-")[0])"
+
+    - name: Build
+      run: cmake --build build --config Release -j 2
+
+    - name: Install
+      run: cmake --install build --config Release --prefix prefix
+
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure --no-tests=error -C Release -j 2
