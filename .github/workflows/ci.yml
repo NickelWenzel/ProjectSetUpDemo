@@ -10,7 +10,7 @@ on:
     - master
 
 jobs:
-  test:
+  build:
     strategy:
       matrix:
         os: [macos-12, ubuntu-22.04, windows-2022]
@@ -56,6 +56,25 @@ jobs:
     - name: Install
       run: cmake --install build --config Release --prefix prefix
 
+    - name: Upload build
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-${{ matrix.os }}
+        path: build
+
+  test:
+    needs: build
+    strategy:
+      matrix:
+        os: [macos-12, ubuntu-22.04, windows-2022]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Download build
+      uses: actions/download-artifact@v3
+      with:
+        name: build-${{ matrix.os }}
     - name: Test
       working-directory: build
       run: ctest --output-on-failure --no-tests=error -C Release -j 2
