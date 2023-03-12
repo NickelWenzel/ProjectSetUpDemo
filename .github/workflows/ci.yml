@@ -53,6 +53,10 @@ jobs:
     - name: Build
       run: cmake --build build --config Release -j 2
 
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure --no-tests=error -C Release -j 2
+
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
@@ -69,13 +73,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Download build
       uses: actions/download-artifact@v3
       with:
         name: build-${{ matrix.os }}
         path: build
+        
     - name: Test
-      shell: pwsh
       working-directory: build
       run: ctest --output-on-failure --no-tests=error -C Release -j 2
