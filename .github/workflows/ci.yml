@@ -78,5 +78,5 @@ jobs:
 
     - name: Test
       working-directory: build
-      run: .\bin\Release\smoke_test
+      run: ./bin/Release/smoke_test
       # ctest --output-on-failure --no-tests=error -C Release -j 2
