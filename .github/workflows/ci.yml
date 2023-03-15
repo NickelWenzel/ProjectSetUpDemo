@@ -83,4 +83,7 @@ jobs:
 
     - name: Test
       working-directory: build
-      run:  ctest --output-on-failure --no-tests=error -C Release -j 2
+      run:  |
+        ls
+        ls test/
+        ctest --output-on-failure --no-tests=error -C Release -j 2
