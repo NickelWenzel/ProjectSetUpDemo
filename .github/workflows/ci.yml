@@ -79,7 +79,11 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: build-${{ matrix.os }}
-        path: build
+
+    - name: Extract files
+      run: |
+        mkdir build
+        tar -xvf build-${{ matrix.os }}.tar build
 
     - name: Test
       working-directory: build
