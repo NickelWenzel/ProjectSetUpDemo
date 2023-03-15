@@ -13,7 +13,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [acos-12, ubuntu-22.04, windows-2022]
 
     runs-on: ${{ matrix.os }}
 
@@ -68,7 +68,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [acos-12, ubuntu-22.04, windows-2022]
 
     runs-on: ${{ matrix.os }}
 
@@ -87,7 +87,4 @@ jobs:
 
     - name: Test
       working-directory: build
-      run:  |
-        ls
-        ls test/
-        ctest --output-on-failure --no-tests=error -C Release -j 2
+      run: ctest --output-on-failure --no-tests=error -C Release -j 2
