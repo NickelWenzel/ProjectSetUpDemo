@@ -1,5 +1,8 @@
 name: Add package to release
 
+permissions:
+  contents: write
+  
 on:
   push:
     # Sequence of patterns matched against refs/tags
@@ -18,7 +21,7 @@ jobs:
       with:
         draft: false
         prerelease: false
-        release_name: Release ${{ github.ref }}
+        name: Release ${{ github.ref }}
         tag_name: ${{ github.ref }}
     outputs:
       upload_url: ${{ steps.create_release.outputs.assets }}
