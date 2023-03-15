@@ -76,13 +76,6 @@ jobs:
         name: build-${{ matrix.os }}
         path: build
 
-    - name: ls
-      run: ls
-
-    - name: ls
-      working-directory: build
-      run: ls
-
     - name: Test
       working-directory: build
       run: ./bin/Release/smoke_test
