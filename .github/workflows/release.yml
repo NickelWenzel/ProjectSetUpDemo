@@ -24,7 +24,7 @@ jobs:
         name: Release ${{ github.ref_name }}
         tag_name: ${{ github.ref_name }}
     outputs:
-      upload_url: ${{ steps.create_release.outputs.assets }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
 
   build_and_add_to_release:
     needs: create-release
