@@ -53,11 +53,16 @@ jobs:
     - name: Build
       run: cmake --build build --config Release -j 2
 
+    # Circumvent permission issues, this is the recommended way according to this source
+    # https://github.com/actions/upload-artifact#maintaining-file-permissions-and-case-sensitive-files
+    - name: Tar files
+      run: tar -cvf build-${{ matrix.os }}.tar /build
+
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
         name: build-${{ matrix.os }}
-        path: build
+        path: build-${{ matrix.os }}.tar
 
   test:
     needs: build
@@ -73,10 +78,12 @@ jobs:
     - name: Download build
       uses: actions/download-artifact@v3
       with:
-        name: build-${{ matrix.os }}
-        path: build
+        name: build-${{ matrix.os }}.tar
+        path: build.tar
+
+    - name: Untar files
+      run: tar -xvf build.tar
 
     - name: Test
       working-directory: build
-      run: ./bin/Release/smoke_test
-      # ctest --output-on-failure --no-tests=error -C Release -j 2
+      run:  ctest --output-on-failure --no-tests=error -C Release -j 2
