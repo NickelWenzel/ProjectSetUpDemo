@@ -22,7 +22,7 @@ target_link_libraries(testlib PRIVATE fmt::fmt)
 
 include(GNUInstallDirs)
 install(TARGETS testlib EXPORT testlibTargets)
-INSTALL(DIRECTORY include/ DESTINATION include)
+install(DIRECTORY include/ DESTINATION include)
 install(EXPORT testlibTargets
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/testlib
   NAMESPACE testlib::)
