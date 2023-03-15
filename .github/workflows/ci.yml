@@ -56,7 +56,7 @@ jobs:
     # Circumvent permission issues, this is the recommended way according to this source
     # https://github.com/actions/upload-artifact#maintaining-file-permissions-and-case-sensitive-files
     - name: Tar files
-      run: tar -cvf build-${{ matrix.os }}.tar /build
+      run: tar -cvf build-${{ matrix.os }}.tar build
 
     - name: Upload build
       uses: actions/upload-artifact@v3
